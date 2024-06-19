@@ -5,14 +5,17 @@ import {login} from '../store/authSlice'
 import {Button, Input, Logo} from './index.js'
 import {useDispatch} from 'react-redux'
 import {useForm} from 'react-hook-form'
+import { photo2 } from '../photo/photos.jsx'
 
 function Signup() {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
     const [error, setError] = useState("")
     const dispatch = useDispatch()
     const {register, handleSubmit} = useForm()
 
     const create = async(data) => {
+        setLoading(true);
         setError("")
         try {
             const userData = await authService.createAccount(data)
@@ -23,6 +26,9 @@ function Signup() {
             }
         } catch (error) {
             setError(error.message)
+        }
+        finally{
+            setLoading(false);
         }
     }
 
@@ -74,11 +80,16 @@ function Signup() {
                         {...register("password", {
                             required: true,})}
                         />
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" disabled={loading} className="w-full">
                             Create Account
                         </Button>
                     </div>
                 </form>
+                {loading && (
+                    <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 '>
+                        <img src={photo2} alt="Loding" className='w-24 h-24' />
+                    </div>
+                )}
             </div>
 
     </div>
