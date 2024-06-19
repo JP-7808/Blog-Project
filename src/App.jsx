@@ -27,7 +27,7 @@ function App() {
       <div className='w-full block'>
         <Header />
         <main >
-        Blog  <Outlet />
+        Blog : <p className='text-sm'>For better View use DESKTOP Mode Because this project is under developmnet.</p>  <Outlet />
         </main>
         <Footer />
       </div>
