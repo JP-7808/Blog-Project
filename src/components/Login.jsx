@@ -5,15 +5,18 @@ import {Button, Input, Logo} from "./index"
 import {useDispatch} from "react-redux"
 import authService from "../appwrite/auth"
 import {useForm} from "react-hook-form"
+import { photo2 } from '../photo/photos'
 
 function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const {register, handleSubmit} = useForm()
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false);
 
     const login = async(data) => {
-        setError("")
+        setError("");
+        setLoading(true);
         try {
             const session = await authService.login(data)
             if (session) {
@@ -24,6 +27,7 @@ function Login() {
         } catch (error) {
             setError(error.message)
         }
+        setLoading(false);
     }
 
   return (
@@ -72,9 +76,15 @@ function Login() {
                 <Button
                 type="submit"
                 className="w-full"
+                disabled = {loading}  // disable button while loading
                 >Sign in</Button>
             </div>
         </form>
+        {loading && (
+            <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 '>
+                <img src={photo2} alt="Loding" className='w-24 h-24' />
+            </div>
+        )}
         </div>
     </div>
   )
